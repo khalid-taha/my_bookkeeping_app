@@ -1,28 +1,11 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, MetaData
-from sqlalchemy.orm import relationship, sessionmaker, declarative_base
-
-metadata = MetaData()
-Base = declarative_base(metadata=metadata)
-engine = create_engine('sqlite:///my_database.db')
-Session = sessionmaker(bind=engine)
-session = Session()
-
-class Category(Base):
-    __tablename__ = 'categories'
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-    transactions = relationship("Transaction", back_populates="category")
-
-class Transaction(Base):
-    __tablename__ = 'transactions'
-    id = Column(Integer, primary_key=True)
-    amount = Column(Integer, nullable=False)
-    category_id = Column(Integer, ForeignKey('categories.id'))
-    category = relationship("Category", back_populates="transactions")
+from db_config import db
+from models import Category, Transaction
 
 def init_db():
-    Base.metadata.create_all(engine)
+    db.create_all()
 
 if __name__ == '__main__':
-    init_db()
+    from app import app
+    with app.app_context():
+        init_db()
     print("Database initialized successfully.")

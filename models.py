@@ -1,18 +1,14 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
-from setup_database import Base
+from db_config import db
 
-class Category(Base):
+class Category(db.Model):
     __tablename__ = 'categories'
-    __table_args__ = {'extend_existing': True}  # Add this line
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-    transactions = relationship("Transaction", back_populates="category")
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+    transactions = db.relationship("Transaction", back_populates="category")
 
-class Transaction(Base):
+class Transaction(db.Model):
     __tablename__ = 'transactions'
-    __table_args__ = {'extend_existing': True}  # Add this line
-    id = Column(Integer, primary_key=True)
-    amount = Column(Integer, nullable=False)
-    category_id = Column(Integer, ForeignKey('categories.id'))
-    category = relationship("Category", back_populates="transactions")
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Integer, nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    category = db.relationship("Category", back_populates="transactions")
