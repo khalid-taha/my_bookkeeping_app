@@ -1,28 +1,24 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-# Create a Flask application
-app = Flask(__name__)
+Base = declarative_base()
+engine = create_engine('sqlite:///my_database.db')
+Session = sessionmaker(bind=engine)
+session = Session()
 
-# Configure the SQLAlchemy part of the application instance
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bookkeeping.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+class Category(Base):
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+    transactions = relationship("Transaction", back_populates="category")
 
-# Create the SQLAlchemy db instance
-db = SQLAlchemy(app)
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    id = Column(Integer, primary_key=True)
+    amount = Column(Integer, nullable=False)
+    category_id = Column(Integer, ForeignKey('categories.id'))
+    category = relationship("Category", back_populates="transactions")
 
-# Define Your Models
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.String(50), nullable=False)
-    amount = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(200), nullable=True)
-
-    def __repr__(self):
-        return f"<Transaction {self.date} - {self.amount} - {self.category}>"
-
-# Function to create the database and tables
-def initialize_database():
-    with app.app_context():
-        db.create_all()
+def init_db():
+    Base.metadata.create_all(engine)

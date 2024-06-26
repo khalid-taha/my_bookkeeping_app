@@ -1,13 +1,16 @@
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from setup_database import Base
 
-db = SQLAlchemy()
+class Category(Base):
+    __tablename__ = 'categories'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+    transactions = relationship("Transaction", back_populates="category")
 
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.String(50), nullable=False)
-    amount = db.Column(db.Float, nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(200), nullable=True)
-
-    def __repr__(self):
-        return f"<Transaction {self.date} - {self.amount} - {self.category}>"
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    id = Column(Integer, primary_key=True)
+    amount = Column(Integer, nullable=False)
+    category_id = Column(Integer, ForeignKey('categories.id'))
+    category = relationship("Category", back_populates="transactions")

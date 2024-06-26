@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Transaction</title>
+</head>
+<body>
+    <form method="post">
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <!-- other form fields -->
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
