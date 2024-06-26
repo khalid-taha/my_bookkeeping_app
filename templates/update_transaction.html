@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Transaction</title>
+</head>
+<body>
+    <h1>Update Transaction</h1>
+    <form action="{{ url_for('app.update_transaction', id=transaction.id) }}" method="post">
+        Date: <input type="text" name="date" value="{{ transaction.date }}"><br>
+        Amount: <input type="text" name="amount" value="{{ transaction.amount }}"><br>
+        Category: <input type="text" name="category" value="{{ transaction.category }}"><br>
+        Description: <input type="text" name="description" value="{{ transaction.description }}"><br>
+        <input type="submit" value="Update Transaction">
+    </form>
+    <a href="{{ url_for('app.index') }}">Back to Home</a>
+</body>
+</html>
