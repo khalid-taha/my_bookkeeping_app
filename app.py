@@ -3,10 +3,11 @@ from setup_database import init_db
 
 app = Flask(__name__)
 
-# Initialize database
+# Initialize the database
 init_db()
 
-import routes  # Ensure routes are imported after initializing the app
+# Import routes after initializing the app to avoid circular imports
+import routes
 
 if __name__ == '__main__':
     app.run(debug=True)

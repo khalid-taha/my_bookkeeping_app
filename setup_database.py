@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, MetaData
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 
-Base = declarative_base()
+metadata = MetaData()
+Base = declarative_base(metadata=metadata)
 engine = create_engine('sqlite:///my_database.db')
 Session = sessionmaker(bind=engine)
 session = Session()
