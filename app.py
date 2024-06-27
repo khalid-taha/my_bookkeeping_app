@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from db_config import db
+from config import Config  # Import the Config class
 
 app = Flask(__name__)
+app.config.from_object(Config)  # Use the configuration from config.py
 
-# Configure the database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+# Initialize SQLAlchemy instance with the app
 db.init_app(app)
 
 @app.route('/')
