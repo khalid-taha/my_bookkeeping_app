@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from db_config import db
-from setup_database import init_db
 
 app = Flask(__name__)
 
@@ -9,10 +8,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-
-# Initialize the database
-with app.app_context():
-    init_db()
 
 @app.route('/')
 def index():
