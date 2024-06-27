@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Transaction</title>
+    <title>Edit Transaction</title>
 </head>
 <body>
-    <h1>New Transaction</h1>
+    <h1>Edit Transaction</h1>
     <form method="post">
         <label for="category">Category</label>
         <select name="category" id="category">
             {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.name }}</option>
+            <option value="{{ category.id }}" {% if category.id == transaction.category_id %}selected{% endif %}>{{ category.name }}</option>
             {% endfor %}
         </select>
         <br>
         
         <label for="amount">Amount</label>
-        <input type="number" name="amount" id="amount" required>
+        <input type="number" name="amount" id="amount" value="{{ transaction.amount }}" required>
         <br>
 
         <label for="description">Description</label>
-        <input type="text" name="description" id="description">
+        <input type="text" name="description" id="description" value="{{ transaction.description }}">
         <br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Update">
     </form>
 </body>
 </html>

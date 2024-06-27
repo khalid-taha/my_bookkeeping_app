@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from db_config import db
 from setup_database import init_db
 
@@ -16,17 +16,54 @@ with app.app_context():
 
 @app.route('/')
 def index():
-    return "Hello, this is the Bookkeeping App!"
+    return redirect(url_for('list_transactions'))
 
 @app.route('/new_transaction', methods=['GET', 'POST'])
 def new_transaction():
-    from models import Category  # Import here to avoid circular import
+    from models import Category, Transaction  # Import here to avoid circular import
     if request.method == 'POST':
-        # Handle form submission
-        pass
+        category_id = request.form['category']
+        amount = request.form['amount']
+        description = request.form.get('description', '')
+
+        # Create a new transaction
+        new_transaction = Transaction(amount=amount, category_id=category_id, description=description)
+        db.session.add(new_transaction)
+        db.session.commit()
+
+        return redirect(url_for('list_transactions'))
+
     else:
         categories = Category.query.all()
         return render_template('new_transaction.html', categories=categories)
+
+@app.route('/edit_transaction/<int:id>', methods=['GET', 'POST'])
+def edit_transaction(id):
+    from models import Category, Transaction
+    transaction = Transaction.query.get(id)
+    if request.method == 'POST':
+        transaction.category_id = request.form['category']
+        transaction.amount = request.form['amount']
+        transaction.description = request.form.get('description', '')
+        db.session.commit()
+        return redirect(url_for('list_transactions'))
+    else:
+        categories = Category.query.all()
+        return render_template('edit_transaction.html', transaction=transaction, categories=categories)
+
+@app.route('/delete_transaction/<int:id>', methods=['POST'])
+def delete_transaction(id):
+    from models import Transaction
+    transaction = Transaction.query.get(id)
+    db.session.delete(transaction)
+    db.session.commit()
+    return redirect(url_for('list_transactions'))
+
+@app.route('/transactions')
+def list_transactions():
+    from models import Transaction
+    transactions = Transaction.query.all()
+    return render_template('transactions.html', transactions=transactions)
 
 if __name__ == '__main__':
     app.run(debug=True)

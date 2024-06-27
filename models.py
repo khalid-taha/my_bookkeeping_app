@@ -10,5 +10,6 @@ class Transaction(db.Model):
     __tablename__ = 'transactions'
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String, nullable=True)  # Ensure this line is present
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category = db.relationship("Category", back_populates="transactions")
