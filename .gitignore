@@ -8,3 +8,6 @@ __pycache__/
 # instance/
 
 .vscode/
+
+concat_py_files.sh
+code.txt
