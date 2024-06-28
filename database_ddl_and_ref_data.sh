@@ -26,8 +26,10 @@ CREATE TABLE IF NOT EXISTS categories (
 -- Create transactions table
 CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    amount INTEGER NOT NULL,
-    description TEXT,
+    total_amount DOUBLE NOT NULL,  -- Changed
+    amount DOUBLE NOT NULL,  -- Changed
+    vat DOUBLE NOT NULL,  -- Changed
+    transaction_description TEXT,  -- Changed
     category_id INTEGER,
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );

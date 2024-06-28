@@ -17,11 +17,13 @@ def new_transaction():
     from models import Category, Transaction  # Import here to avoid circular import
     if request.method == 'POST':
         category_id = request.form['category']
-        amount = request.form['amount']
-        description = request.form.get('description', '')
+        total_amount = request.form['total_amount']  # Changed
+        amount = request.form['amount']  # Changed
+        vat = request.form['vat']  # Changed
+        description = request.form.get('description', '')  # Changed
 
         # Create a new transaction
-        new_transaction = Transaction(amount=amount, category_id=category_id, description=description)
+        new_transaction = Transaction(total_amount=total_amount, amount=amount, vat=vat, category_id=category_id, transaction_description=description)  # Changed
         db.session.add(new_transaction)
         db.session.commit()
 
@@ -37,8 +39,10 @@ def edit_transaction(id):
     transaction = Transaction.query.get(id)
     if request.method == 'POST':
         transaction.category_id = request.form['category']
-        transaction.amount = request.form['amount']
-        transaction.description = request.form.get('description', '')
+        transaction.total_amount = request.form['total_amount']  # Changed
+        transaction.amount = request.form['amount']  # Changed
+        transaction.vat = request.form['vat']  # Changed
+        transaction.transaction_description = request.form.get('description', '')  # Changed
         db.session.commit()
         return redirect(url_for('list_transactions'))
     else:

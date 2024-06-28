@@ -15,9 +15,17 @@
             {% endfor %}
         </select>
         <br>
+
+        <label for="total_amount">Total Amount</label> <!-- Added -->
+        <input type="number" step="0.01" name="total_amount" id="total_amount" required> <!-- Added -->
+        <br>
         
-        <label for="amount">Amount</label>
-        <input type="number" name="amount" id="amount" required>
+        <label for="amount">Amount</label> <!-- Changed -->
+        <input type="number" step="0.01" name="amount" id="amount" required> <!-- Changed -->
+        <br>
+        
+        <label for="vat">VAT</label> <!-- Added -->
+        <input type="number" step="0.01" name="vat" id="vat" required> <!-- Added -->
         <br>
 
         <label for="description">Description</label>
