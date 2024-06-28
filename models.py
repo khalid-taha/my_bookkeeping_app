@@ -1,4 +1,5 @@
 from db_config import db
+from sqlalchemy import Date
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -9,9 +10,10 @@ class Category(db.Model):
 class Transaction(db.Model):
     __tablename__ = 'transactions'
     id = db.Column(db.Integer, primary_key=True)
-    total_amount = db.Column(db.Double, nullable=False)  # Changed
-    amount = db.Column(db.Double, nullable=False)  # Changed
-    vat = db.Column(db.Double, nullable=False)  # Changed
-    transaction_description = db.Column(db.String, nullable=True)  # Changed
+    transaction_date = db.Column(Date, nullable=False)  # Changed to Date
+    total_amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    vat = db.Column(db.Float, nullable=False)
+    transaction_description = db.Column(db.String, nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category = db.relationship("Category", back_populates="transactions")

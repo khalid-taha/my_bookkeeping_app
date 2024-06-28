@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS categories (
 -- Create transactions table
 CREATE TABLE IF NOT EXISTS transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    transaction_date DATE NOT NULL,  -- Changed to DATE
     total_amount DOUBLE NOT NULL,
     amount DOUBLE NOT NULL,
     vat DOUBLE NOT NULL,

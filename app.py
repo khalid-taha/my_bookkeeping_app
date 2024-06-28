@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from db_config import db
 from config import Config
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -26,6 +27,7 @@ def index():
 def new_transaction():
     from models import Category, Transaction
     if request.method == 'POST':
+        transaction_date = request.form['transaction_date']
         category_id = request.form['category']
         total_amount = request.form['total_amount']
         amount = request.form['amount']
@@ -33,6 +35,7 @@ def new_transaction():
         description = request.form.get('description', '')
 
         new_transaction = Transaction(
+            transaction_date=datetime.strptime(transaction_date, '%Y-%m-%d').date(),  # Changed to date
             total_amount=total_amount, 
             amount=amount, 
             vat=vat, 
@@ -52,6 +55,7 @@ def edit_transaction(id):
     from models import Category, Transaction
     transaction = Transaction.query.get(id)
     if request.method == 'POST':
+        transaction.transaction_date = datetime.strptime(request.form['transaction_date'], '%Y-%m-%d').date()  # Changed to date
         transaction.category_id = request.form['category']
         transaction.total_amount = request.form['total_amount']
         transaction.amount = request.form['amount']
