@@ -9,6 +9,11 @@ sqlite3.exe --version
 # Path to your SQLite database
 DB_PATH='./instance/my_database.db'
 
+# Check if the database file exists, if not, create an empty file
+if [ ! -f "$DB_PATH" ]; then
+    touch "$DB_PATH"
+fi
+
 # SQL commands to execute
 SQL_COMMANDS=$(cat <<EOF
 -- Drop transactions table if it exists
